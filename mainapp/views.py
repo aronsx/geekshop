@@ -17,9 +17,30 @@ def products(request):
 
 
 def contact(request):
+    locations = [
+         {
+             'city': 'Москва',
+             'phone': '+7-888-888-8888',
+             'email': 'info@geekshop.ru',
+             'adress': 'В пределах МКАД',
+         },
+         {
+             'city': 'Петербург',
+             'phone': '+7-888-888-8888',
+             'email': 'info@geekshop.ru',
+             'adress': 'В центре',
+         },
+         {
+             'city': 'Казань',
+             'phone': '+7-888-888-8888',
+             'email': 'info@geekshop.ru',
+             'adress': 'У моста',
+         },
+    ]
     visit_date = datetime.datetime.now()
     context = {
         'page_title': 'контакты',
+        'locations': locations,
         'visit_date': visit_date,
     }
     return render(request, 'mainapp/contact.html', context)
