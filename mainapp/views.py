@@ -1,5 +1,8 @@
 import datetime
+import os
+import json
 from django.shortcuts import render
+from django.conf import settings
 
 
 def index(request):
@@ -38,9 +41,12 @@ def contact(request):
          },
     ]
     visit_date = datetime.datetime.now()
+    file_path = os.path.join(settings.BASE_DIR, "static", "locations.json")
+    with open(file_path) as f:
+        locations_file = json.load(f)
     context = {
         'page_title': 'контакты',
-        'locations': locations,
+        'locations': locations_file,
         'visit_date': visit_date,
     }
     return render(request, 'mainapp/contact.html', context)
