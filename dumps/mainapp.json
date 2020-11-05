@@ -1,0 +1,1 @@
+[{"model": "mainapp.productscategory", "pk": 1, "fields": {"name": "стулья", "description": ""}}, {"model": "mainapp.productscategory", "pk": 2, "fields": {"name": "столы", "description": ""}}, {"model": "mainapp.product", "pk": 3, "fields": {"category": 1, "name": "Комфортный стул", "description": "", "short_desc": "", "price": "0.00", "quantity": 0}}]
