@@ -3,6 +3,7 @@ from django.contrib import auth
 
 from authapp.forms import ShopUserLoginForm
 from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 
 def login(request):
@@ -14,8 +15,8 @@ def login(request):
             user = auth.authenticate(username=username, password=password)
             if user and user.is_active:
                 auth.login(request, user)
-                return HttpResponseRedirect('/')
-                # return HttpResponseRedirect(reverse('main:index'))
+                # return HttpResponseRedirect('/')
+                return HttpResponseRedirect(reverse('main:index'))
     else:
         form = ShopUserLoginForm()
 
@@ -23,3 +24,8 @@ def login(request):
         'form': form
     }
     return render(request, 'authapp/login.html', context)
+
+
+def logout(request):
+    auth.logout(request)
+    return HttpResponseRedirect(reverse('main:index'))
