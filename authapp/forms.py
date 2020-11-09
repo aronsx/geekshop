@@ -1,10 +1,12 @@
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 
+from authapp.models import ShopUser
+
 
 class ShopUserLoginForm(AuthenticationForm):
     class Meta:
-        mode = User
+        model = ShopUser
         fields = ('usermane', 'password')
 
     def __init__(self, *args, **kwargs):

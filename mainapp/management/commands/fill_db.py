@@ -1,8 +1,8 @@
 import json
 import os
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
-from django.contrib.auth.models import User
+from authapp.models import ShopUser
 from mainapp.models import ProductsCategory, Product
 # from django.conf import settings
 
@@ -26,6 +26,6 @@ class Command(BaseCommand):
             item['category'] = category
             Product.objects.create(**item)
 
-        if not User.objects.filter(username='django').exists():
-            User.objects.create_superuser(
+        if not ShopUser.objects.filter(username='django').exists():
+            ShopUser.objects.create_superuser(
                 'django', 'django@db.local', 'geekbrains')
