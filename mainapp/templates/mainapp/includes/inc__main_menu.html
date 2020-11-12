@@ -9,7 +9,7 @@
                {% if request.resolver_match.url_name == 'contact' %}class="active"{% endif %}>контакты</a></li>
         <li>
             {% if user.is_authenticated %}
-                <a href="{#{% url 'authapp:logout' %}#}">
+                <a href="{% url 'auth:update' %}">
                     {{ user.first_name|default:'пользователь'|title }}
                 </a>
                 <a href="{% url 'authapp:logout' %}">
