@@ -4,6 +4,8 @@ from django.core.management.base import BaseCommand
 
 from authapp.models import ShopUser
 from mainapp.models import ProductsCategory, Product
+
+
 # from django.conf import settings
 
 
