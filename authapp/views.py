@@ -36,7 +36,7 @@ def register(request):
         form = ShopUserRegisterForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('main:register'))
+            return HttpResponseRedirect(reverse('main:index'))
     else:
         form = ShopUserRegisterForm()
 

@@ -6,10 +6,10 @@
         {% csrf_token %}
         {{ form.as_p }}
         <br>
-        <input class="form-control" type="submit" value="войти">
+        <input class="form-control" type="submit" value="зарегистрироваться">
     </form>
-    <a href="{% url 'main:index' %"} class=" btn btn-round form-control">
-    зарегистрироваться
+    <a href="{% url 'main:index' %}" class=" btn btn-round form-control">
+    на главную
     </a>
 
 {% endblock %}:w
