@@ -49,7 +49,8 @@ def register(request):
 
 def update(request):
     if request.method == 'POST':
-        form = ShopUserUpdateForm(request.POST, request.FILES)
+        form = ShopUserUpdateForm(request.POST, request.FILES,
+                                  instance=request.user)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('main:index'))
