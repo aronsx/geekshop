@@ -3,7 +3,7 @@ import os
 import json
 from django.shortcuts import render
 from django.conf import settings
-from mainapp.models import ProductsCategory
+from mainapp.models import ProductsCategory, Product
 
 
 def get_catalog_menu():
@@ -24,6 +24,21 @@ def products(request):
         'catalog_menu': get_catalog_menu(),
     }
     return render(request, 'mainapp/products.html', context)
+
+
+def category_items(request, category_pk):
+    if category_pk == 0:
+        products = Product.objects.all()
+    else:
+        products = Product.objects.filter(category_id=category_pk)
+
+    context = {
+        'page_title': 'каталог',
+        'catalog_menu': get_catalog_menu(),
+        'products': products,
+        'category_pk': category_pk,
+    }
+    return render(request, 'mainapp/category_items.html', context)
 
 
 def contact(request):

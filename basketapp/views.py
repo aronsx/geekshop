@@ -9,7 +9,11 @@ def index(request):
 
 
 def add(request, pk):
-    print(f'pk: {pk}')
+    # basket_item = request.user.basket_set.filter(
+    # basket_item = request.user.basket.filter(
+    #     product_id=pk
+    # ).first()
+
     # basket_item = Basket.objects.filter(
     #     user=request.user,
     #     product_id=pk
