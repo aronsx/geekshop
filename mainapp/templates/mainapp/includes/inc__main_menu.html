@@ -23,6 +23,8 @@
         </li>
     </ul>
     <a href="#" class="search"></a>
-    <a href="{% url 'basket:index' %}" class="basket"></a>
+    <a href="{% url 'basket:index' %}" class="basket">
+        <span>{{ user.basket_total_cost|floatformat:0 }} руб ({{ user.basket_total_qty }} шт)</span>
+    </a>
 </div>
 
