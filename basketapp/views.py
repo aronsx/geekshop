@@ -17,10 +17,10 @@ def index(request):
 
 
 @login_required
-def add(request, pk):
+def add(request, product_pk):
     basket_item, _ = Basket.objects.get_or_create(
         user=request.user,
-        product_id=pk
+        product_id=product_pk
     )
 
     basket_item.quantity += 1
@@ -29,7 +29,7 @@ def add(request, pk):
 
 
 @login_required
-def remove(request, pk):
-    basket_item = get_object_or_404(Basket, pk=pk)
+def remove(request, basket_pk):
+    basket_item = get_object_or_404(Basket, pk=basket_pk)
     basket_item.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
