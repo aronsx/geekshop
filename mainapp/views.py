@@ -1,7 +1,7 @@
 import datetime
 import os
 import json
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.conf import settings
 from mainapp.models import ProductsCategory, Product
 
@@ -39,6 +39,18 @@ def category_items(request, category_pk):
         'category_pk': category_pk,
     }
     return render(request, 'mainapp/category_items.html', context)
+
+
+def product_page(request, product_pk):
+    product = get_object_or_404(Product, pk=product_pk)
+
+    context = {
+        'page_title': 'продукт',
+        'catalog_menu': get_catalog_menu(),
+        'product': product,
+        'category_pk': product.category_id,
+    }
+    return render(request, 'mainapp/product_page.html', context)
 
 
 def contact(request):

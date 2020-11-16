@@ -14,7 +14,7 @@
                            value="{{ item.quantity }}">
                     <span class="product_cost">{{ item.product_cost }}&nbspруб</span>
 
-                    <a href="{% url 'basket:remove' item.pk %}" class="btn btn-round">
+                    <a href="{% url 'basket:remove' basket_pk=item.pk %}" class="btn btn-round">
                         удалить
                     </a>
                 </div>
