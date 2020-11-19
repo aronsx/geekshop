@@ -1,6 +1,8 @@
 import datetime
 import os
 import json
+import random
+
 from django.shortcuts import render, get_object_or_404
 from django.conf import settings
 from mainapp.models import ProductsCategory, Product
@@ -8,6 +10,16 @@ from mainapp.models import ProductsCategory, Product
 
 def get_catalog_menu():
     return ProductsCategory.objects.all()
+
+
+def get_same_products(product):
+    return Product.objects.filter(
+        category=product.category).exclude(pk=product.pk)
+
+
+def get_hot_product():
+    products = Product.objects.all()
+    return random.choice(products)
 
 
 def index(request):
@@ -19,8 +31,12 @@ def index(request):
 
 
 def products(request):
+    hot_product = get_hot_product()
+
     context = {
         'page_title': 'каталог',
+        'hot_product': hot_product,
+        'same_products': get_same_products(hot_product),
         'catalog_menu': get_catalog_menu(),
     }
     return render(request, 'mainapp/products.html', context)
