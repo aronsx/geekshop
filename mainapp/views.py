@@ -22,6 +22,11 @@ def get_hot_product():
     return random.choice(products)
 
 
+def get_same_products(product):
+    return Product.objects.filter(
+        category=product.category).exclude(pk=product.pk)
+
+
 def index(request):
     context = {
         'page_title': 'главная',
