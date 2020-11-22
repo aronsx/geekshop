@@ -2,6 +2,9 @@
 
 window.onload = function () {
     console.log("DOM ready");
+    $('.product_price').on('click', function (event) {
+        console.log("target:", event.target)
+    })
     // $('.basket_record').on('click', '.category_name',
     //     function (event) {
     //         console.log("target:", event.target);
