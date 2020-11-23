@@ -7,7 +7,9 @@ from django.urls import reverse
 from adminapp.forms import AdminShopUserUpdateForm
 
 
-# Create your views here.
+# CRUD
+from mainapp.models import ProductsCategory
+
 
 @user_passes_test(lambda x: x.is_superuser)
 def index(request):
@@ -17,20 +19,6 @@ def index(request):
         'object_list': users
     }
     return render(request, 'adminapp/index.html', context=context)
-
-
-def user_delete(request, user_pk):
-    user = get_object_or_404(get_user_model(), pk=user_pk)
-    if not user.is_active or request.method == 'POST':
-        if user.is_active:
-            user.is_active = False
-            user.save()
-        return HttpResponseRedirect(reverse('myadmin:index'))
-    context = {
-        'page_title': 'админка/пользователи/удаление',
-        'object': user
-    }
-    return render(request, 'adminapp/user_delete.html', context=context)
 
 
 @user_passes_test(lambda x: x.is_superuser)
@@ -50,3 +38,28 @@ def user_update(request, user_pk):
     }
 
     return render(request, 'adminapp/user_update.html', context)
+
+
+def user_delete(request, user_pk):
+    user = get_object_or_404(get_user_model(), pk=user_pk)
+    # user.delete()
+    if not user.is_active or request.method == 'POST':
+        if user.is_active:
+            user.is_active = False
+            user.save()
+        return HttpResponseRedirect(reverse('myadmin:index'))
+    context = {
+        'page_title': 'админка/пользователи/удаление',
+        'object': user
+    }
+    return render(request, 'adminapp/user_delete.html', context=context)
+
+
+@user_passes_test(lambda x: x.is_superuser)
+def categories(request):
+    context = {
+        'page_title': 'админка/категории',
+        'object_list': ProductsCategory.objects.all()
+    }
+    return render(request, 'adminapp/categories.html', context=context)
+
