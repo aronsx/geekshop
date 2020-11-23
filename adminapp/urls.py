@@ -6,4 +6,6 @@ app_name = 'adminapp'
 
 urlpatterns = [
     path('', adminapp.index, name='index'),
+    path('user/delete/<int:user_pk>/', adminapp.user_delete, name='user_delete'),
+    path('user/update/<int:user_pk>/', adminapp.user_update, name='user_update'),
 ]
