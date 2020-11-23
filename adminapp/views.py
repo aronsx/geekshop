@@ -1,12 +1,14 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import user_passes_test
-from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 
-from adminapp.forms import AdminShopUserUpdateForm, AdminShopUserCreateForm
-from mainapp.models import ProductsCategory
+from adminapp.forms import AdminShopUserUpdateForm, AdminShopUserCreateForm, AdminProductCategoryUpdateForm, \
+    AdminProductUpdateForm
+from mainapp.models import ProductsCategory, Product
 
 
 class SuperUserOnlyMixin:
@@ -56,4 +58,60 @@ def categories(request):
         'page_title': 'админка/категории',
         'object_list': ProductsCategory.objects.all()
     }
-    return render(request, 'adminapp/categories.html', context=context)
+    return render(request, 'adminapp/categories_list.html', context=context)
+
+
+class ProductCategoryCreateView(SuperUserOnlyMixin, SetPageTitleMixin, CreateView):
+    model = ProductsCategory
+    success_url = reverse_lazy('myadmin:categories')
+    form_class = AdminProductCategoryUpdateForm
+    page_title = 'категории продуктов/создание'
+
+
+class ProductCategoryUpdateView(SuperUserOnlyMixin, SetPageTitleMixin, UpdateView):
+    model = ProductsCategory
+    success_url = reverse_lazy('myadmin:categories')
+    form_class = AdminProductCategoryUpdateForm
+    page_title = 'категории продуктов/редактирование'
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def category_products(request, pk):
+    category = get_object_or_404(ProductsCategory, pk=pk)
+    object_list = category.product_set.all()
+    context = {
+        'page_title': f'категория {category.name}/продукты',
+        'category': category,
+        'object_list': object_list
+    }
+    return render(request, 'adminapp/category_products_list.html', context)
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def product_create(request, pk):
+    category = get_object_or_404(ProductsCategory, pk=pk)
+    if request.method == 'POST':
+        form = AdminProductUpdateForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse(
+                'myadmin:category_products',
+                kwargs={'pk': category.pk}
+            ))
+    else:
+        form = AdminProductUpdateForm(
+            initial={
+                'category': category,
+            }
+        )
+
+    context = {
+        'page_title': 'продукты/создание',
+        'form': form,
+        'category': category,
+    }
+    return render(request, 'adminapp/product_update.html', context)
+
+
+class ProductDetail(SuperUserOnlyMixin, DetailView):
+    model = Product
