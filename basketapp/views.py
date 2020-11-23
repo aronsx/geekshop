@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404
+from django.template import loader
 
 from basketapp.models import Basket
 
@@ -26,6 +27,33 @@ def add(request, product_pk):
     basket_item.quantity += 1
     basket_item.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def set(request, basket_pk, qty):
+    if request.is_ajax():
+        basket_item = Basket.objects.filter(pk=basket_pk).first()
+        if not basket_item:
+            return JsonResponse(
+                {'status': 'error'},
+                status=404)
+        if qty <= 0:
+            basket_item.delete()
+        else:
+            basket_item.quantity = qty
+            basket_item.save()
+        basket = request.user.basket.all()
+        context = {
+            'basket': basket,
+        }
+        basket_list = loader.render_to_string(
+            'basketapp/includes/inc__basket_list.html',
+            context=context,
+            request=request
+        )
+        return JsonResponse({
+            'status': 'ok',
+            'basket_pk': basket_list
+        })
 
 
 @login_required
