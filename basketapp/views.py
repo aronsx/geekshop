@@ -52,7 +52,11 @@ def set(request, basket_pk, qty):
         )
         return JsonResponse({
             'status': 'ok',
+<<<<<<< HEAD
+            'basket_pk': basket_list
+=======
             'basket_list': basket_list
+>>>>>>> master
         })
 
 
